@@ -1,6 +1,10 @@
 #!/usr/bin/env python3.3
 # -*- coding: utf-8 -*-
-# poop
+
+# Credit goes to Lee Ehudin for the Card class and the Deck class, as he posted this on the wiki earlier when I was working on this
+# I made a few minor changes, such as coloring the text, making the Ace high, and getting rid of the symbols for purposes of readability
+# I also added the functions at the end, and the three classes at the end
+
 
 """A module defining functions for playing card games"""
 
@@ -86,6 +90,7 @@ class Deck(object):
     def draw(self):
         return self.deck.pop(0)
 
+# Creates a class of knowledge that the computer AI could have about the game state
 class Knowledge(object):
     def __init__(self, cards_left, teammate, opponent1, opponent2):
         self.cards_left = cards_left
@@ -131,20 +136,23 @@ class Team(object):
     def tricks(self):
         return (self.player1.tricks + self.player2.tricks)
 
+# Returns the number of cards in a list of cards of a given suit
 def numberInSuit(hand, suit):
     return len(list(filter(lambda x: suit==x.type(), hand)))
 
+# Returns a list of valid next moves based off of a given hand
+# The restriction should be a suit, or None
+# Spades_broken is a boolean value
 def validOptions(hand, restriction, spades_broken):
     if (restriction is None) and numberInSuit(hand, 'Spades') != len(hand) and not spades_broken:
-#        print("thing1")
         return list(filter(lambda x: x.type() != 'Spades', hand))
     elif numberInSuit(hand, restriction) == 0:
-#        print("thing2")
         return hand
     else:
-#        print("Thing3")
         return list(filter(lambda x: restriction == x.type(), hand))
 
+# This returns the highest card in a given suit out of a collection of cards
+# It takes spades_broken as an argument so as to maintain compatibility with validOptions
 def highestInSuit(cards, suit, spades_broken):
     if numberInSuit(cards, suit) == 0:
         return None

@@ -1,3 +1,7 @@
+#!/usr/bin/env python3.3
+
+# Credit goes to Nissa Mai for this. Her original code can be found on the wiki.
+
 #numbers that add to multiplier
 tens = dict(zip(['twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'],range(20,100,10)))
 teens = dict(zip(['ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'],range(10,20)))

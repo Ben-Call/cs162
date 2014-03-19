@@ -262,12 +262,15 @@ def play_hand(players):
         players = rotate(players, index)
 
     for player in players:
+        player.knowledge.teammate = [-1]
+        player.knowledge.opponent1 = [-1]
+        player.knowledge.opponent2 = [-1]
         print("{} bid {} and took {} tricks.".format(player.name, player.contract, player.tricks))
         try:
-            player_info[(player.name, str(original_seats.index(player)), str(player.contract))][0] += 1
-            player_info[(player.name, str(original_seats.index(player)), str(player.contract))][1] += player.tricks
+            player_info[(player.name.lower(), str(original_seats.index(player)), str(player.contract))][0] += 1
+            player_info[(player.name.lower(), str(original_seats.index(player)), str(player.contract))][1] += player.tricks
         except KeyError:
-            player_info[(player.name, str(original_seats.index(player)), str(player.contract))] = [1,player.tricks]
+            player_info[(player.name.lower(), str(original_seats.index(player)), str(player.contract))] = [1,player.tricks]
         pickle.dump(player_info, open("players.p", "wb"))
 
 # This will clear the screen

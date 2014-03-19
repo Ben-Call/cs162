@@ -248,12 +248,10 @@ def protect(player, cards_played):
 # It returns the number of tricks the computer needs to adjust by
 def who_to_adjust(player):
     teammate = player.knowledge.teammate
-    opponent1 = player.knowledge.opponent1
-    opponent2 = player.knowledge.opponent2
     adjustment = 0
-    considerations = list(filter(lambda x: x[0] != -1, [teammate, opponent1, opponent2]))
-    for player in considerations:
-        adjustment += adjust(player)
+    considerations = list(filter(lambda x: x[0] != -1, [teammate]))
+    for person in considerations:
+        adjustment += adjust(person)
     return adjustment
 
 # Given a "player", which is really just the knowledge of the AI about this player, it determines if there is enough past bidding history
@@ -264,7 +262,7 @@ def adjust(player):
         times = player_info[(player[7].lower(), str(player[8]), str(player[0]))][0]
         total = player_info[(player[7].lower(), str(player[8]), str(player[0]))][1]
         if int(times) > 5 and player[0] != 0:
-            return int(total)/int(times) - player[0]
+            return (-1)*(player[0] - int(total)/int(times))
         else:
             return 0
     except KeyError:
@@ -282,9 +280,11 @@ def bidding(player, bids):
         bid = max(bid, 0)
     elif 0 == player.knowledge.teammate[0]:
         bid += 1
-    if bid == 0 and (c.Card('Spades', 'Ace') in player.hand or c.Card('Spades', 'King') in player.hand):
+    bid = max(bid + who_to_adjust(player), 0)
+    if round(bid) == 0 and (c.Card('Spades', 'Ace') in player.hand or c.Card('Spades', 'King') in player.hand):
         bid += 1
-    bid += who_to_adjust(player)
+    
+#    bid += who_to_adjust(player)
     return round(bid)
 
 # This takes a collection of cards, and the suit (in case people want to extend this to something other than spades) and returns a number of tricks possible to take
